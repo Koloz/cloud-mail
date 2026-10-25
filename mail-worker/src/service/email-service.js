@@ -1,3 +1,4 @@
+import { cloudflareEmailBinding } from '../lib/cloudflare-email-binding.mjs';
 import orm from '../entity/orm';
 import email from '../entity/email';
 import { emailListColumns, emailBriefColumns, EMAIL_LIST_TEXT_LEN } from '../lib/email-list-columns';
@@ -327,7 +328,7 @@ const emailService = {
 
 		const domain = emailUtils.getDomain(accountRow.email);
 		const resendToken = resendTokens[domain];
-		const useCloudflareEmail = !!c.env.email;
+		const useCloudflareEmail = !!cloudflareEmailBinding(c.env, accountRow.email);
 
 		//如果接收方存在站外邮箱，又没有发信服务
 		if (!useCloudflareEmail && !resendToken && !allInternal) {
@@ -498,7 +499,7 @@ const emailService = {
 			};
 		}
 
-		const result = await c.env.email.send(sendForm);
+		const result = await cloudflareEmailBinding(c.env, params.accountEmail).send(sendForm);
 
 		return {
 			data: {

@@ -46,3 +46,8 @@ project_link = "${PROJECT_LINK}"
 
 [build]
 command = "pnpm --prefix ../mail-vue install && pnpm --prefix ../mail-vue run build"
+
+# Dola support uses Cloudflare Email Sending independently of other domains.
+[[send_email]]
+name = "DOLA_EMAIL"
+allowed_sender_addresses = ["support@dolaaihub.com"]
